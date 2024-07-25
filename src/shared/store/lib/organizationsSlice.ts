@@ -1,10 +1,5 @@
-import { createSlice, PayloadAction, Reducer } from "@reduxjs/toolkit";
-
-export interface Organization {
-  id: string;
-  name: string;
-  address: string;
-}
+import { Organization } from "@/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface OrganizationsState {
   list: Organization[];
@@ -18,8 +13,12 @@ const organizationsSlice = createSlice({
   name: "organizations",
   initialState,
   reducers: {
-    addOrganization: (state, action: PayloadAction<Organization>) => {
-      state.list.push(action.payload);
+    addOrganization: (
+      state,
+      action: PayloadAction<Omit<Organization, "id">>
+    ) => {
+      const id = crypto.randomUUID();
+      state.list.push({ ...action.payload, id });
       localStorage.setItem("organizations", JSON.stringify(state.list));
     },
     updateOrganization: (state, action: PayloadAction<Organization>) => {

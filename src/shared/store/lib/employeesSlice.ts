@@ -1,12 +1,5 @@
+import { Employee } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface Employee {
-  id: string;
-  organizationId: string;
-  firstName: string;
-  lastName: string;
-  position: string;
-}
 
 export interface EmployeesState {
   list: Employee[];

@@ -1,32 +1,11 @@
 import { addOrganization, updateOrganization } from "@/shared/store";
+import { useStylesModal } from "@/shared/styels/modal";
 import { Organization } from "@/types";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import { tss } from "tss-react/mui";
 import * as yup from "yup";
-
-const useStyles = tss.create(({ theme }) => ({
-  modal: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    backgroundColor: theme.palette.background.default,
-    boxShadow: theme.shadows[24],
-    padding: theme.spacing(4),
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: theme.spacing(2),
-  },
-  header: {
-    marginBottom: theme.spacing(2),
-  },
-}));
 
 interface OrganizationModalProps {
   open: boolean;
@@ -46,7 +25,7 @@ export const OrganizationModal: FC<OrganizationModalProps> = ({
   onClose,
   organization,
 }) => {
-  const { classes } = useStyles();
+  const { classes } = useStylesModal();
   const dispatch = useDispatch();
 
   const initialValues: OrganizationFromValues = organization
@@ -67,6 +46,7 @@ export const OrganizationModal: FC<OrganizationModalProps> = ({
     initialValues,
     validationSchema: organizationFromSchema,
     onSubmit: handleSubmit,
+    enableReinitialize: true,
   });
 
   return (

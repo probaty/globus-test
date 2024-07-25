@@ -1,5 +1,6 @@
 import { Employee } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { deleteOrganization } from "./organizationsSlice";
 
 export interface EmployeesState {
   list: Employee[];
@@ -14,7 +15,8 @@ const employeesSlice = createSlice({
   initialState,
   reducers: {
     addEmployee: (state, action: PayloadAction<Employee>) => {
-      state.list.push(action.payload);
+      const id = crypto.randomUUID();
+      state.list.push({ ...action.payload, id });
       localStorage.setItem("employees", JSON.stringify(state.list));
     },
     updateEmployee: (state, action: PayloadAction<Employee>) => {
@@ -28,6 +30,14 @@ const employeesSlice = createSlice({
       state.list = state.list.filter((emp) => emp.id !== action.payload);
       localStorage.setItem("employees", JSON.stringify(state.list));
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(deleteOrganization, (state, action) => {
+      state.list = state.list.filter(
+        (emp) => emp.organizationId !== action.payload
+      );
+      localStorage.setItem("employees", JSON.stringify(state.list));
+    });
   },
 });
 

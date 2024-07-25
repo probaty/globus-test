@@ -1,26 +1,30 @@
-import { FC, MouseEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { OrganizationModal } from "@/feature/OrganizationModal";
+import { deleteOrganization } from "@/shared/store";
+import { Organization } from "@/types";
+import { Delete, Edit } from "@mui/icons-material";
 import {
   Button,
   IconButton,
   Table,
+  TableBody,
+  TableCell,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
 } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
-import { Organization } from "@/types";
-import { deleteOrganization, RootState } from "@/shared/store";
-import { OrganizationModal } from "@/feature/OrganizationModal";
+import { FC, MouseEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-export const OrganizationList: FC = () => {
+interface OrganizationListProps {
+  organizations: Organization[];
+}
+
+export const OrganizationList: FC<OrganizationListProps> = ({
+  organizations,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const organizations = useSelector(
-    (state: RootState) => state.organizations.list
-  );
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editingOrganization, setEditingOrganization] =
     useState<Organization | null>(null);
@@ -69,7 +73,7 @@ export const OrganizationList: FC = () => {
           {organizations.map((org) => (
             <TableRow
               key={org.id}
-              onClick={() => navigate(`/organization/${org.id}/employees`)}
+              onClick={() => navigate(`/organization/${org.id}`)}
               sx={{
                 cursor: "pointer",
                 "&:hover": { backgroundColor: "#00000014" },
